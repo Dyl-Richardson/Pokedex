@@ -1,4 +1,3 @@
-// Gen 1
 const divGen1 = document.querySelector(".gen1")
 const pokemonNumber = 151
 
@@ -77,15 +76,23 @@ function pokedex(pokemon) {
         const type = pokemon.types[0].type.name
         firstGen.style.backgroundColor = colors[type]
 
-        fetch("https://pokeapi.co/api/v2/pokemon-species/"+pokemon.id+"/")
-        .then(resp => resp.json())
-        .then(data => {{
-            if (data.evolves_from_species !== null) {
-                let previous = document.createElement("p")
-                previous.innerText = data.evolves_from_species.name
-                firstGen.appendChild(previous)
-            }}})
         
+        // fetch("https://pokeapi.co/api/v2/pokemon-species/"+pokemon.id)
+        // .then(resp => resp.json())
+        // .then(data => {{
+        //     if (data.evolves_from_species != null) {
+        //         let previousEv = document.createElement("div")
+        //         previousEv.className = "thumb"
+        //         let previousImg = document.createElement("img")
+        //         previousImg.className = "thumbImg"
+        //         previousImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/"+(pokemon.id-1)+".svg"
+        //         previousEv.innerText = data.evolves_from_species.name
+        //         previousEv.appendChild(previousImg)
+        //         firstGen.appendChild(previousEv)
+        //     }
+        // }})
 }
 
 fetchPokemons()
+
+console.log("https://pokeapi.co/api/v2/pokemon-species/446/sprites");
