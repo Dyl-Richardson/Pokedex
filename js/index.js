@@ -76,6 +76,16 @@ function pokedex(pokemon) {
 
         const type = pokemon.types[0].type.name
         firstGen.style.backgroundColor = colors[type]
+
+        fetch("https://pokeapi.co/api/v2/pokemon-species/"+pokemon.id+"/")
+        .then(resp => resp.json())
+        .then(data => {{
+            if (data.evolves_from_species !== null) {
+                let previous = document.createElement("p")
+                previous.innerText = data.evolves_from_species.name
+                firstGen.appendChild(previous)
+            }}})
+        
 }
 
 fetchPokemons()
