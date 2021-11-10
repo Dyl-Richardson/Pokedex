@@ -34,12 +34,12 @@ const getPokemon = async id => {
 };
 
 function pokedex(pokemon) {
-        const firstGen = document.createElement("div")
+        const firstGen = document.createElement("article")
         firstGen.className = "pokemon"
         divGen1.appendChild(firstGen)
     
         const h3 = document.createElement("h3")
-        h3.innerText = pokemon.name
+        h3.innerText =  "n°"+ pokemon.id + " " + pokemon.name
         firstGen.appendChild(h3)
     
         const imgCont = document.createElement("div")
@@ -68,31 +68,37 @@ function pokedex(pokemon) {
                 ul.appendChild(li) 
              }
         }
-        
-        const pkmnid = document.createElement("h4")
-        pkmnid.innerText = "id : " + pokemon.id
-        firstGen.appendChild(pkmnid)
 
         const type = pokemon.types[0].type.name
         firstGen.style.backgroundColor = colors[type]
 
-        
-        // fetch("https://pokeapi.co/api/v2/pokemon-species/"+pokemon.id)
-        // .then(resp => resp.json())
-        // .then(data => {{
-        //     if (data.evolves_from_species != null) {
-        //         let previousEv = document.createElement("div")
-        //         previousEv.className = "thumb"
-        //         let previousImg = document.createElement("img")
-        //         previousImg.className = "thumbImg"
-        //         previousImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/"+(pokemon.id-1)+".svg"
-        //         previousEv.innerText = data.evolves_from_species.name
-        //         previousEv.appendChild(previousImg)
-        //         firstGen.appendChild(previousEv)
-        //     }
-        // }})
+        fetch("https://pokeapi.co/api/v2/pokemon-species/"+pokemon.id)
+        .then(resp => resp.json())
+        .then(data => {{
+            if (data.evolves_from_species != null) {
+
+                let string = data.evolves_from_species.url
+                let newString = string.replace('https://pokeapi.co/api/v2/pokemon-species/','');
+                let evId = newString.replace('/', '')
+
+                let previousEv = document.createElement("div")
+                previousEv.className = "thumb"
+                let previousTitle = document.createElement("h4")
+                let previousName = document.createElement("p")
+                let previousImg = document.createElement("img")
+                previousImg.className = "thumbImg"
+                
+                previousTitle.innerText = "Evolvution of :"
+                previousImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/"+(evId)+".svg"
+                previousName.innerText = data.evolves_from_species.name
+
+                previousEv.appendChild(previousTitle)
+                previousEv.appendChild(previousName)
+                previousEv.appendChild(previousImg)
+                firstGen.appendChild(previousEv)
+            }
+        }})
+
 }
 
 fetchPokemons()
-
-console.log("https://pokeapi.co/api/v2/pokemon-species/446/sprites");

@@ -14,12 +14,16 @@ h1 {
   justify-content: center;
 }
 
+.pokemonAll {
+  margin: 0.5% 0.5%;
+}
+
 .pokemon {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   text-align: center;
-  width: 15vw;
+  width: 20vw;
   margin: 0.5% 0.5%;
   border-radius: 5%;
 }
@@ -55,7 +59,15 @@ hr {
   width: 5vw;
 }
 
-@media screen and (max-width: 999px) {
+.infoButton {
+  width: 1vw;
+  border-radius: 50%;
+  position: absolute;
+  margin-left: 1vw;
+  margin-top: 1vw;
+}
+
+@media screen and (max-width: 480px) {
   .pokemon {
     width: 90vw;
   }
@@ -81,3 +93,31 @@ hr {
     justify-content: center;
   }
 }
+
+@media screen and (min-width: 481px) and (max-width:980px) {
+  .pokemon {
+    width: 35vw;
+  }
+  body {
+    padding: 0;
+  }
+
+  section {
+    padding: 0 5%;
+  }
+
+  img {
+    width: 32vw;
+    height: 16vh;
+    margin: auto;
+  }
+
+  .imgCont {
+    width: 30vw;
+  }
+
+  .gen1 {
+    justify-content: center;
+  }
+}
+
