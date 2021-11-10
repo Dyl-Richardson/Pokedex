@@ -21,17 +21,22 @@ const colors = {
 };
 
 const fetchPokemons = async () => {
-	for (let i = 1; i <= pokemonNumber; i++) {
+    for (let i = 1; i <= pokemonNumber; i++) {
 		await getPokemon(i);
-	}
+	}	
+
 };
+
 
 const getPokemon = async id => {
 	const url = "https://pokeapi.co/api/v2/pokemon/"+id;
 	const res = await fetch(url);
 	const pokemon = await res.json();
 	pokedex(pokemon);
+
 };
+
+// let evId = ""
 
 function pokedex(pokemon) {
         const firstGen = document.createElement("article")
@@ -72,32 +77,89 @@ function pokedex(pokemon) {
         const type = pokemon.types[0].type.name
         firstGen.style.backgroundColor = colors[type]
 
+        const evolution = document.createElement("h4")
+        evolution.innerText = "Evolution chain :"
+        firstGen.appendChild(evolution)
+
+        const evolutionDiv = document.createElement("div")
+        evolutionDiv.className = "evolutionDiv"
+        firstGen.appendChild(evolutionDiv)
+
         fetch("https://pokeapi.co/api/v2/pokemon-species/"+pokemon.id)
         .then(resp => resp.json())
-        .then(data => {{
-            if (data.evolves_from_species != null) {
-
-                let string = data.evolves_from_species.url
-                let newString = string.replace('https://pokeapi.co/api/v2/pokemon-species/','');
+        .then(data => {
+                let string = data.evolution_chain.url
+                let newString = string.replace('https://pokeapi.co/api/v2/evolution-chain/','');
                 let evId = newString.replace('/', '')
 
-                let previousEv = document.createElement("div")
-                previousEv.className = "thumb"
-                let previousTitle = document.createElement("h4")
-                let previousName = document.createElement("p")
-                let previousImg = document.createElement("img")
-                previousImg.className = "thumbImg"
-                
-                previousTitle.innerText = "Evolvution of :"
-                previousImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/"+(evId)+".svg"
-                previousName.innerText = data.evolves_from_species.name
+                fetch("https://pokeapi.co/api/v2/evolution-chain/"+evId)
+                    .then(resp => resp.json())
+                    .then(data => {
+                        //! A ameliorer
+                        if (data.chain.evolves_to.length >= 1) {
+                            console.log(data.chain.evolves_to.length);
+                        //First evolution
+                        let firstEv = data.chain.species
 
-                previousEv.appendChild(previousTitle)
-                previousEv.appendChild(previousName)
-                previousEv.appendChild(previousImg)
-                firstGen.appendChild(previousEv)
-            }
-        }})
+                        let string3 = firstEv.url
+                        let newString3 = string3.replace('https://pokeapi.co/api/v2/pokemon-species/','');
+                        let evId3 = newString3.replace('/', '')
+
+                        let firstEvImg = document.createElement("img")
+                        firstEvImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/"+evId3+".svg"
+                        let firstEvName = document.createElement("p")
+                        firstEvName.innerText = firstEv.name
+
+                        evolutionDiv.appendChild(firstEvName)
+                        evolutionDiv.appendChild(firstEvImg)
+                        
+                        // Middle evolution
+                        let nextEv = data.chain.evolves_to[0].species
+
+                        let string = nextEv.url
+                        let newString = string.replace('https://pokeapi.co/api/v2/pokemon-species/','');
+                        let evId = newString.replace('/', '')
+
+                        let nextEvImg = document.createElement("img")
+                        nextEvImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/"+evId+".svg"
+                        let nextEvName = document.createElement("p")
+                        nextEvName.innerText = nextEv.name
+                        
+                        evolutionDiv.appendChild(nextEvName)
+                        evolutionDiv.appendChild(nextEvImg)
+
+                        // Last evolution
+                        let lastEv = data.chain.evolves_to[0].evolves_to[0].species
+
+                        let string2 = lastEv.url
+                        let newString2 = string2.replace('https://pokeapi.co/api/v2/pokemon-species/','');
+                        let evId2 = newString2.replace('/', '')
+
+                        let lastEvImg = document.createElement("img")
+                        lastEvImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/"+evId2+".svg"
+                        let lastEvName = document.createElement("p")
+                        lastEvName.innerText = lastEv.name
+
+                        evolutionDiv.appendChild(lastEvName)
+                        evolutionDiv.appendChild(lastEvImg)
+                    }
+                    else {
+                        let firstEv = data.chain.species
+
+                        let string3 = firstEv.url
+                        let newString3 = string3.replace('https://pokeapi.co/api/v2/pokemon-species/','');
+                        let evId3 = newString3.replace('/', '')
+
+                        let firstEvImg = document.createElement("img")
+                        firstEvImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/"+evId3+".svg"
+                        let firstEvName = document.createElement("p")
+                        firstEvName.innerText = firstEv.name
+
+                        evolutionDiv.appendChild(firstEvName)
+                        evolutionDiv.appendChild(firstEvImg)
+                    }
+                    })  
+        })
 
 }
 
