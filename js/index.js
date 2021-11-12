@@ -54,7 +54,7 @@ function pokedex(pokemon) {
         imgCont.className = "imgCont"
         firstGen.appendChild(imgCont)
         const img = document.createElement("img")
-        img.src = pokemon.sprites.other.dream_world.front_default
+        img.src = pokemon.sprites.other["official-artwork"].front_default
         imgCont.appendChild(img)
     
         const h4 = document.createElement("h4")
@@ -98,6 +98,7 @@ function pokedex(pokemon) {
                 fetch("https://pokeapi.co/api/v2/evolution-chain/"+evId)
                     .then(resp => resp.json())
                     .then(data => {
+                        
                             //First evolution
                             let firstEv = data.chain.species
 
@@ -106,13 +107,14 @@ function pokedex(pokemon) {
                             let evId3 = newString3.replace('/', '')
 
                             let firstEvImg = document.createElement("img")
-                            firstEvImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/"+evId3+".svg"
+                            firstEvImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/"+evId3+".png"
                             let firstEvName = document.createElement("p")
                             firstEvName.innerText = firstEv.name
 
                             evolutionDiv.appendChild(firstEvName)
                             evolutionDiv.appendChild(firstEvImg)
-
+                            
+                            console.log(pokemon.sprites.other["official-artwork"].front_default);
                             if ((data.chain.evolves_to.length >= 1)
                             &&(evId3 != 133)
                             &&(evId3 != 134)
@@ -126,7 +128,7 @@ function pokedex(pokemon) {
                             let evId = newString.replace('/', '')
 
                             let nextEvImg = document.createElement("img")
-                            nextEvImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/"+evId+".svg"
+                            nextEvImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/"+evId+".png"
                             let nextEvName = document.createElement("p")
                             nextEvName.innerText = nextEv.name
                             
@@ -142,7 +144,7 @@ function pokedex(pokemon) {
                             let evId2 = newString2.replace('/', '')
 
                             let lastEvImg = document.createElement("img")
-                            lastEvImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/"+evId2+".svg"
+                            lastEvImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/"+evId2+".png"
                             let lastEvName = document.createElement("p")
                             lastEvName.innerText = lastEv.name
 
