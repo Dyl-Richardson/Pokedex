@@ -1,6 +1,10 @@
+// Container
 const divGen1 = document.querySelector(".gen1")
+
+// Number of card
 const pokemonNumber = 151
 
+// Color of card
 const colors = {
 	fire: '#FDDFDF',
 	grass: '#DEFDE0',
@@ -20,6 +24,7 @@ const colors = {
     ice:"#62b1c4"
 };
 
+// Creation of card
 const fetchPokemons = async () => {
     for (let i = 1; i <= pokemonNumber; i++) {
 		await getPokemon(i);
@@ -35,8 +40,6 @@ const getPokemon = async id => {
 	pokedex(pokemon);
 
 };
-
-// let evId = ""
 
 function pokedex(pokemon) {
         const firstGen = document.createElement("article")
@@ -95,70 +98,58 @@ function pokedex(pokemon) {
                 fetch("https://pokeapi.co/api/v2/evolution-chain/"+evId)
                     .then(resp => resp.json())
                     .then(data => {
-                        //! A ameliorer
-                        if (data.chain.evolves_to.length >= 1) {
-                            console.log(data.chain.evolves_to.length);
-                        //First evolution
-                        let firstEv = data.chain.species
+                            //First evolution
+                            let firstEv = data.chain.species
 
-                        let string3 = firstEv.url
-                        let newString3 = string3.replace('https://pokeapi.co/api/v2/pokemon-species/','');
-                        let evId3 = newString3.replace('/', '')
+                            let string3 = firstEv.url
+                            let newString3 = string3.replace('https://pokeapi.co/api/v2/pokemon-species/','');
+                            let evId3 = newString3.replace('/', '')
 
-                        let firstEvImg = document.createElement("img")
-                        firstEvImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/"+evId3+".svg"
-                        let firstEvName = document.createElement("p")
-                        firstEvName.innerText = firstEv.name
+                            let firstEvImg = document.createElement("img")
+                            firstEvImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/"+evId3+".svg"
+                            let firstEvName = document.createElement("p")
+                            firstEvName.innerText = firstEv.name
 
-                        evolutionDiv.appendChild(firstEvName)
-                        evolutionDiv.appendChild(firstEvImg)
-                        
-                        // Middle evolution
-                        let nextEv = data.chain.evolves_to[0].species
+                            evolutionDiv.appendChild(firstEvName)
+                            evolutionDiv.appendChild(firstEvImg)
 
-                        let string = nextEv.url
-                        let newString = string.replace('https://pokeapi.co/api/v2/pokemon-species/','');
-                        let evId = newString.replace('/', '')
+                            if ((data.chain.evolves_to.length >= 1)
+                            &&(evId3 != 133)
+                            &&(evId3 != 134)
+                            &&(evId3 != 135)
+                            &&(evId3 != 136)) {
+                            // Middle evolution
+                            let nextEv = data.chain.evolves_to[0].species
 
-                        let nextEvImg = document.createElement("img")
-                        nextEvImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/"+evId+".svg"
-                        let nextEvName = document.createElement("p")
-                        nextEvName.innerText = nextEv.name
-                        
-                        evolutionDiv.appendChild(nextEvName)
-                        evolutionDiv.appendChild(nextEvImg)
+                            let string = nextEv.url
+                            let newString = string.replace('https://pokeapi.co/api/v2/pokemon-species/','');
+                            let evId = newString.replace('/', '')
 
-                        // Last evolution
-                        let lastEv = data.chain.evolves_to[0].evolves_to[0].species
+                            let nextEvImg = document.createElement("img")
+                            nextEvImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/"+evId+".svg"
+                            let nextEvName = document.createElement("p")
+                            nextEvName.innerText = nextEv.name
+                            
+                            evolutionDiv.appendChild(nextEvName)
+                            evolutionDiv.appendChild(nextEvImg)
+                            
+                            if (data.chain.evolves_to[0].evolves_to.length >= 1) {
+                            // Last evolution
+                            let lastEv = data.chain.evolves_to[0].evolves_to[0].species
 
-                        let string2 = lastEv.url
-                        let newString2 = string2.replace('https://pokeapi.co/api/v2/pokemon-species/','');
-                        let evId2 = newString2.replace('/', '')
+                            let string2 = lastEv.url
+                            let newString2 = string2.replace('https://pokeapi.co/api/v2/pokemon-species/','');
+                            let evId2 = newString2.replace('/', '')
 
-                        let lastEvImg = document.createElement("img")
-                        lastEvImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/"+evId2+".svg"
-                        let lastEvName = document.createElement("p")
-                        lastEvName.innerText = lastEv.name
+                            let lastEvImg = document.createElement("img")
+                            lastEvImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/"+evId2+".svg"
+                            let lastEvName = document.createElement("p")
+                            lastEvName.innerText = lastEv.name
 
-                        evolutionDiv.appendChild(lastEvName)
-                        evolutionDiv.appendChild(lastEvImg)
-                    }
-                    else {
-                        let firstEv = data.chain.species
-
-                        let string3 = firstEv.url
-                        let newString3 = string3.replace('https://pokeapi.co/api/v2/pokemon-species/','');
-                        let evId3 = newString3.replace('/', '')
-
-                        let firstEvImg = document.createElement("img")
-                        firstEvImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/"+evId3+".svg"
-                        let firstEvName = document.createElement("p")
-                        firstEvName.innerText = firstEv.name
-
-                        evolutionDiv.appendChild(firstEvName)
-                        evolutionDiv.appendChild(firstEvImg)
-                    }
-                    })  
+                            evolutionDiv.appendChild(lastEvName)
+                            evolutionDiv.appendChild(lastEvImg)
+                            }}
+                        })  
         })
 
 }
