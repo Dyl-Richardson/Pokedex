@@ -1,9 +1,6 @@
 // Container
 const divGen1 = document.querySelector(".gen1")
 
-// Number of card
-const pokemonNumber = 151
-
 // Color of card
 const colors = {
 	fire: '#FDDFDF',
@@ -26,22 +23,23 @@ const colors = {
 
 // Creation of card
 const fetchPokemons = async () => {
-    for (let i = 1; i <= pokemonNumber; i++) {
+    for (let i = 1; i <= 151; i++) {
 		await getPokemon(i);
 	}	
 
 };
 
-
 const getPokemon = async id => {
-	const url = "https://pokeapi.co/api/v2/pokemon/"+id;
-	const res = await fetch(url);
-	const pokemon = await res.json();
-	pokedex(pokemon);
+	const res = await fetch("https://pokeapi.co/api/v2/pokemon/"+id)
+	const pokemon = await res.json()
 
+    const res2 = await fetch("https://pokeapi.co/api/v2/pokemon-species/"+id)
+    const pokemon2 = await res2.json()
+
+	pokedex(pokemon, pokemon2);
 };
 
-function pokedex(pokemon) {
+function pokedex(pokemon, pokemon2) {
         const firstGen = document.createElement("article")
         firstGen.className = "pokemon"
         divGen1.appendChild(firstGen)
@@ -88,72 +86,55 @@ function pokedex(pokemon) {
         evolutionDiv.className = "evolutionDiv"
         firstGen.appendChild(evolutionDiv)
 
-        fetch("https://pokeapi.co/api/v2/pokemon-species/"+pokemon.id)
-        .then(resp => resp.json())
-        .then(data => {
-                let string = data.evolution_chain.url
-                let newString = string.replace('https://pokeapi.co/api/v2/evolution-chain/','');
-                let evId = newString.replace('/', '')
+            fetch(pokemon2.evolution_chain.url)
+                .then(resp => resp.json())
+                .then(data => {
+                    //First evolution
+                    let string3 = data.chain.species.url
+                    let newString3 = string3.replace('https://pokeapi.co/api/v2/pokemon-species/','');
+                    let evId3 = newString3.replace('/', '')
 
-                fetch("https://pokeapi.co/api/v2/evolution-chain/"+evId)
-                    .then(resp => resp.json())
-                    .then(data => {
-                        
-                            //First evolution
-                            let firstEv = data.chain.species
+                    let firstEvImg = document.createElement("img")
+                        firstEvImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/"+evId3+".png"
+                    let firstEvName = document.createElement("p")
+                        firstEvName.innerText = data.chain.species.name
 
-                            let string3 = firstEv.url
-                            let newString3 = string3.replace('https://pokeapi.co/api/v2/pokemon-species/','');
-                            let evId3 = newString3.replace('/', '')
-
-                            let firstEvImg = document.createElement("img")
-                            firstEvImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/"+evId3+".png"
-                            let firstEvName = document.createElement("p")
-                            firstEvName.innerText = firstEv.name
-
-                            evolutionDiv.appendChild(firstEvName)
-                            evolutionDiv.appendChild(firstEvImg)
+                    evolutionDiv.appendChild(firstEvName)
+                    evolutionDiv.appendChild(firstEvImg)
                             
-                            console.log(pokemon.sprites.other["official-artwork"].front_default);
-                            if ((data.chain.evolves_to.length >= 1)
+                        if ((data.chain.evolves_to.length >= 1)
                             &&(evId3 != 133)
                             &&(evId3 != 134)
                             &&(evId3 != 135)
                             &&(evId3 != 136)) {
                             // Middle evolution
-                            let nextEv = data.chain.evolves_to[0].species
-
-                            let string = nextEv.url
+                            let string = data.chain.evolves_to[0].species.url
                             let newString = string.replace('https://pokeapi.co/api/v2/pokemon-species/','');
                             let evId = newString.replace('/', '')
 
                             let nextEvImg = document.createElement("img")
-                            nextEvImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/"+evId+".png"
+                                nextEvImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/"+evId+".png"
                             let nextEvName = document.createElement("p")
-                            nextEvName.innerText = nextEv.name
+                                nextEvName.innerText = data.chain.evolves_to[0].species.name
                             
                             evolutionDiv.appendChild(nextEvName)
                             evolutionDiv.appendChild(nextEvImg)
                             
-                            if (data.chain.evolves_to[0].evolves_to.length >= 1) {
-                            // Last evolution
-                            let lastEv = data.chain.evolves_to[0].evolves_to[0].species
+                                if (data.chain.evolves_to[0].evolves_to.length >= 1) {
+                                    // Last evolution
+                                    let string2 = data.chain.evolves_to[0].evolves_to[0].species.url
+                                    let newString2 = string2.replace('https://pokeapi.co/api/v2/pokemon-species/','');
+                                    let evId2 = newString2.replace('/', '')
 
-                            let string2 = lastEv.url
-                            let newString2 = string2.replace('https://pokeapi.co/api/v2/pokemon-species/','');
-                            let evId2 = newString2.replace('/', '')
+                                    let lastEvImg = document.createElement("img")
+                                        lastEvImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/"+evId2+".png"
+                                    let lastEvName = document.createElement("p")
+                                        lastEvName.innerText = data.chain.evolves_to[0].evolves_to[0].species.name
 
-                            let lastEvImg = document.createElement("img")
-                            lastEvImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/"+evId2+".png"
-                            let lastEvName = document.createElement("p")
-                            lastEvName.innerText = lastEv.name
-
-                            evolutionDiv.appendChild(lastEvName)
-                            evolutionDiv.appendChild(lastEvImg)
-                            }}
-                        })  
-        })
-
+                                    evolutionDiv.appendChild(lastEvName)
+                                    evolutionDiv.appendChild(lastEvImg)
+                                }}
+                })  
 }
 
 fetchPokemons()
