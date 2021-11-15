@@ -1,5 +1,3 @@
-A améliorer
-
 ## Description
 
 Creation d'un Pokedex :
