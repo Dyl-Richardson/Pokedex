@@ -36,7 +36,7 @@ function pokedex(pokemon, pokemon2) {
             firstGen.className = "pokemon"
         document.querySelector(".gen1").appendChild(firstGen)
     
-        const h3 = document.createElement("h3")
+        const h3 = document.createElement("h2")
             h3.innerText =  "n°"+ pokemon.id + " " + pokemon.name
         firstGen.appendChild(h3)
     
@@ -45,9 +45,10 @@ function pokedex(pokemon, pokemon2) {
         firstGen.appendChild(imgCont)
         const img = document.createElement("img")
             img.src = pokemon.sprites.other["official-artwork"].front_default
+            img.alt = pokemon.name
         imgCont.appendChild(img)
     
-        const h4 = document.createElement("h4")
+        const h4 = document.createElement("h3")
             h4.innerText = "Moves :"
         firstGen.appendChild(h4)
         const ul = document.createElement("ul")
@@ -70,7 +71,7 @@ function pokedex(pokemon, pokemon2) {
         const type = pokemon.types[0].type.name
         firstGen.style.backgroundColor = colors[type]
 
-        const evolution = document.createElement("h4")
+        const evolution = document.createElement("h3")
             evolution.innerText = "Evolution chain :"
         firstGen.appendChild(evolution)
 
@@ -91,6 +92,7 @@ function pokedex(pokemon, pokemon2) {
 
                     let firstEvImg = document.createElement("img")
                         firstEvImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/"+evId3+".png"
+                        firstEvImg.alt = data.name
                     evolutionDiv.appendChild(firstEvImg)
                     
                         if ((data.chain.evolves_to.length >= 1)
@@ -108,6 +110,7 @@ function pokedex(pokemon, pokemon2) {
                             
                             let nextEvImg = document.createElement("img")
                                 nextEvImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/"+evId+".png"
+                                nextEvImg.alt = data.name
                             evolutionDiv.appendChild(nextEvImg)
 
                                 if (data.chain.evolves_to[0].evolves_to.length >= 1) {
@@ -121,6 +124,7 @@ function pokedex(pokemon, pokemon2) {
 
                                     let lastEvImg = document.createElement("img")
                                         lastEvImg.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/"+evId2+".png"
+                                        lastEvImg.alt = data.name
                                     evolutionDiv.appendChild(lastEvImg)
                                 }}
                 })  
