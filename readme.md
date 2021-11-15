@@ -18,4 +18,4 @@ Creation d'un Pokedex :
 
 ## Perf lighthouse
 
-![Perf](src/images/perf.png)
+![Perf](images/perf.png)
